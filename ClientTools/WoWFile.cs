@@ -75,7 +75,7 @@ namespace ClientTools
 
 		private void FindVersionInfo()
 		{
-			long startOffset = FileString.IndexOf("=> Version %s (%s) %s");
+			long startOffset = FileString.IndexOf("Version %s (%s) %s");
 
 			if (startOffset > 0)
 			{

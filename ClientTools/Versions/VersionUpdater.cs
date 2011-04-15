@@ -35,7 +35,7 @@ namespace ClientTools.Versions
 
 		public static string DBCFolder
 		{
-			get { return Path.Combine(RealmServerConfiguration.Instance.ContentDir, "DBC" + WoWFile.Version.BasicString + "/"); }
+			get { return Path.Combine(RealmServerConfiguration.ContentDir, "DBC" + WoWFile.Version.BasicString + "/"); }
 		}
 
 		public static UpdateFieldExtractor Extractor

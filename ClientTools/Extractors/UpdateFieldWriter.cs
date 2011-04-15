@@ -45,7 +45,7 @@ namespace ClientTools.Extractors
 				                          	                                                            	     i++)
 				                          	                                                            	{
 				                          	                                                            		var fieldArr = m_fields[i];
-				                          	                                                            		writer.WriteRegion(
+				                          	                                                            		writer.WriteMap(
 				                          	                                                            			((ObjectTypeId) i).ToString());
 				                          	                                                            		writer.NewArray("UpdateField", ",",
 				                          	                                                            		                () =>{
@@ -154,7 +154,7 @@ namespace ClientTools.Extractors
 				                          	                                                            		                     		}
 				                          	                                                            		                     	}
 				                          	                                                            		                });
-				                          	                                                            		writer.WriteEndRegion();
+				                          	                                                            		writer.WriteEndMap();
 				                          	                                                            		writer.WriteLine();
 				                          	                                                            	}
 				                          	});

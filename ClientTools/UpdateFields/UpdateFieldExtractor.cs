@@ -282,7 +282,7 @@ namespace ClientTools.UpdateFields
 
 				m_fieldCount++;
 
-				if (!previousField.Equals("CORPSE_FIELD_PAD") && currentField.Equals("CORPSE_FIELD_PAD"))
+                if (!previousField.Equals("CORPSE_FIELD_DYNAMIC_FLAGS") && currentField.Equals("CORPSE_FIELD_DYNAMIC_FLAGS"))
 				{
 					break;
 				}
