@@ -9,7 +9,7 @@ namespace ClientTools
 		public static void Main(string[] args)
 		{
 			var path = Path.GetFullPath(@"../../../../../WCell/Run/Debug/");
-			if (!File.Exists(path))
+			if (!Directory.Exists(path))
 			{
 				throw new Exception("Cannot start ClientTools - Please make sure the path is correct (By default: Inside of a folder that is on the same level as the WCell/ folder)");
 			}
