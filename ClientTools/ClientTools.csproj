@@ -135,6 +135,7 @@
     <Compile Include="Extractors\UpdateFieldWriter.cs" />
     <Compile Include="Extractors\GameObjectTypeExtractor.cs" />
     <Compile Include="ClientTools.cs" />
+    <Compile Include="Misc\ClientDBConstantsWriter.cs" />
     <Compile Include="RalekProgram.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Extractors\SpellFailureExtractor.cs" />
@@ -146,9 +147,7 @@
     <Compile Include="Versions\VersionUpdater.cs" />
     <Compile Include="WoWFile.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Misc\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>

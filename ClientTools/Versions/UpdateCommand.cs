@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using ClientTools.Misc;
 using WCell.RealmServer;
 using WCell.Tools;
 using WCell.Tools.Domi;
@@ -50,15 +51,31 @@ namespace ClientTools.Versions
 			}
 		}
 
+        public class ClientDBConstantsWriterCommand : VersionSubCmd
+        {
+            protected override void Initialize()
+            {
+                Init("WriteDbConstants", "WDC");
+                EnglishDescription = "Writes string constants for names of all client db files .";
+            }
+
+            public override void Process(CmdTrigger<ToolCmdArgs> trigger)
+            {
+                trigger.Reply("Writing client db name constants...");
+                ClientDBConstantsWriter.WriteClientDBStrings();
+                trigger.Reply("Done.");
+            }
+        }
+
 		public class VersionUpdateCommand : VersionSubCmd
 		{
 			protected override void Initialize()
 			{
 				Init("Update", "U");
-				EnglishParamInfo = "[-f ]0/1|[-e]";
+				EnglishParamInfo = "[-f ]0/1|[-e][-d]";
 				EnglishDescription =
 					"Updates WCell with the information from the selected client. Also dumps the DBC files again, unless specified otherwise. " +
-					" -e only extracts enums.";
+					" -e only extracts enums, -d only extracts enums and spell lines for a newer client version.";
 			}
 
 			public override void Process(CmdTrigger<ToolCmdArgs> trigger)
@@ -67,6 +84,7 @@ namespace ClientTools.Versions
 				if (mod == "e")
 				{
 					WCellEnumWriter.WriteAllEnums();
+                    trigger.Reply("All Done.");
 				}
 				else if (!mod.Contains("f") && VersionUpdater.WoWFile.Version <= WCellInfo.RequiredVersion)
 				{
@@ -74,7 +92,13 @@ namespace ClientTools.Versions
 					              WCellInfo.RequiredVersion);
 					trigger.Reply("Use the -f switch (force) to update again.");
 				}
-				else
+				else if(mod.Contains("d"))
+				{
+                    trigger.Reply("Dry run: Updating changes for client: {0} ...", VersionUpdater.WoWFile);
+                    VersionUpdater.DoUpdate(false);
+                    trigger.Reply("All Done.");
+				}
+                else
 				{
 					var dumpDBCs = trigger.Text.NextBool() || !Directory.Exists(VersionUpdater.DBCFolder);
 					if (dumpDBCs)
@@ -84,7 +108,7 @@ namespace ClientTools.Versions
 					}
 					trigger.Reply("Updating changes for client: {0} ...", VersionUpdater.WoWFile);
 					VersionUpdater.DoUpdate();
-					trigger.Reply("Done.");
+					trigger.Reply("All Done.");
 				}
 			}
 		}

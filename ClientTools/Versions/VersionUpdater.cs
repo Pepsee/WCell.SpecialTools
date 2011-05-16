@@ -1,5 +1,6 @@
 using System.IO;
 using ClientTools.Extractors;
+using ClientTools.Misc;
 using ClientTools.UpdateFields;
 using WCell.Constants;
 using WCell.MPQTool;
@@ -58,30 +59,54 @@ namespace ClientTools.Versions
 		/// <summary>
 		/// WARNING: This re-generates code-files to comply with the current client-version
 		/// </summary>
-		public static void DoUpdate(bool dumpDBCs)
+        public static void DoUpdate(bool dumpDBCs, bool writeVersionFiles = true)
 		{
 			if (dumpDBCs)
 			{
 				DumpDBCs();
 			}
-			DoUpdate();
+            DoUpdate(writeVersionFiles);
 		}
 
 		/// <summary>
 		/// WARNING: This re-generates code-files to comply with the current client-version
 		/// </summary>
-		public static void DoUpdate()
+		public static void DoUpdate(bool writeVersionFiles = true)
 		{
 			RealmServerConfiguration.DBCFolderName = "dbc" + WoWFile.Version.BasicString;
-			WriteWCellInfo();
-			ExtractUpdateFields();
-			ExtractSpellFailures();
-
-			WCellEnumWriter.WriteAllEnums();
+            if (writeVersionFiles)
+            {
+                WriteWCellInfo();
+                ExtractUpdateFields();
+                ExtractSpellFailures();
+            }
+		    WCellEnumWriter.WriteAllEnums();
 			SpellLineWriter.WriteSpellLines();
 
+		    BackupInstancesXmlFile();
 			Instances.WriteInstanceStubs();
+            Instances.MergeInstancesXML();
+		    ClientDBConstantsWriter.WriteClientDBStrings();
 		}
+
+        public static void BackupInstancesXmlFile()
+        {
+            var path = RealmServerConfiguration.GetContentPath("Instances.xml");
+
+            //If the file isnt there we dont need to waste our time
+            if (!File.Exists(path)) return;
+
+            var backupPath = RealmServerConfiguration.GetContentPath("Instances.old.xml");
+
+            //Copy the instances.xml into Instances.old.xml
+            File.Copy(path, backupPath, true);
+
+            //If the backup was successful remove the original file
+            if(File.Exists(backupPath))
+            {
+                File.Delete(path);
+            }
+        }
 
 		[Tool]
 		public static void ExtractUpdateFields()
